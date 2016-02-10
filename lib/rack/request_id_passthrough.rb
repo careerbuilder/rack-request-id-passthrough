@@ -21,7 +21,7 @@ module Rack
     private
 
     def determine_request_id(env)
-      request_id = SecureRandom.hex
+      request_id = SecureRandom.uuid
       @headers.reverse.each do |header_name|
         request_id = env[header_name] if env[header_name]
       end
