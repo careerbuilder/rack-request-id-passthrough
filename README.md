@@ -44,6 +44,8 @@ There are three main configuration options
 - outgoing_headers: An array of headers which will be appended to all outgoing http/https requests
 - add_request_id_to_http: A boolean indicating wether or not to patch outgoing http requests
 
+So in the example above ridp would check the HTTP headers FUNKY_TOWN and LESS_IMPORTANT for a value (in that order).  If it found one it would add it ```Thread.current[:request_id_passthrough]``` for usage.  It would also add an HTTP header called OUTGOING to all http requests going thru net/http that contains the request id. 
+
 ## Contributing
 
-See here
+See [here](https://github.com/usbsnowcrash/rack-request-id-passthrough/blob/master/CONTRIBUTING.md)
