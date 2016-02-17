@@ -1,3 +1,4 @@
+
 $LOAD_PATH.push File.expand_path('../lib', __FILE__)
 
 Gem::Specification.new do |s|
@@ -16,4 +17,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'pry'
+  s.add_development_dependency 'webmock'
+  s.add_development_dependency 'codeclimate-test-reporter'
+  s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'rubocop'
 end
