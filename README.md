@@ -3,7 +3,7 @@
 Rack middleware which will take incoming headers (such as request id) and ensure that they are passed along to outgoing http requests.
 This can be used to track a request throughout your architecture by ensuring that all networks calls will recieve the same request id as the request originator.  An example of such an envrionment would be as follows:
 
-![Diagram](master/diagram.png?raw=true "Diagram")
+![Diagram](https://raw.githubusercontent.com/usbsnowcrash/rack-request-id-passthrough/master/diagram.png "Diagram")
 
 ## Installation
 
