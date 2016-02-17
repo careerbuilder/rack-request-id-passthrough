@@ -13,7 +13,7 @@ require 'net/http'
 
 module Rack
   class RequestIDPassthrough
-    def initialize(app, options={})
+    def initialize(app, options = {})
       @app = app
       @headers = options.fetch(:source_headers, %w(HTTP_CF_RAY HTTP_X_REQUEST_ID))
       @outgoing_header = options.fetch(:outgoing_headers, %w(X-REQUEST-ID))
@@ -32,7 +32,7 @@ module Rack
 
     def determine_request_id(env)
       request_id = SecureRandom.uuid
-      @headers.reverse.each do |header_name|
+      @headers.reverse_each do |header_name|
         request_id = env[header_name] if env[header_name]
       end
       request_id
