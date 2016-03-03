@@ -19,4 +19,4 @@ require 'webmock/rspec'
 WebMock.disable_net_connect!(allow: 'codeclimate.com')
 
 require 'rack/mock'
-require 'rack/request_id_passthrough'
+require 'rack/request-id-passthrough'

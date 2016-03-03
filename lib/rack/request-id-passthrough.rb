@@ -15,8 +15,8 @@ module Rack
   class RequestIDPassthrough
     def initialize(app, options = {})
       @app = app
-      @headers = options.fetch(:source_headers, %w(HTTP_CF_RAY HTTP_X_REQUEST_ID))
-      @outgoing_header = options.fetch(:outgoing_headers, %w(X-REQUEST-ID))
+      @headers = options.fetch(:source_headers, %w(CF-RAY X-Request-Id))
+      @outgoing_header = options.fetch(:outgoing_headers, %w(REQUEST_ID))
       @patch_http = options.fetch(:add_request_id_to_http, true)
     end
 
@@ -52,7 +52,7 @@ module Net::HTTPHeader
   def initialize_http_header(initheader)
     if Thread.current[:add_request_id_to_http] && Thread.current[:request_id_passthrough]
       initheader ||= {}
-      initheader['x-request-id'] = Thread.current[:request_id_passthrough]
+      initheader['REQUEST_ID'] = Thread.current[:request_id_passthrough]
     end
     original_initialize_http_header(initheader)
   end
