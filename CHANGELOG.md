@@ -3,4 +3,5 @@ Version History
     * All Version bumps are required to update this file as well!!
 ----
 
+* 1.1.0 Ignore case of the headers we are checking
 * 1.0.0 First initial version
