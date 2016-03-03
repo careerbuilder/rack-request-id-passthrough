@@ -16,6 +16,10 @@ describe Rack::RequestIDPassthrough do
   let(:stack) { Rack::RequestIDPassthrough.new app }
   let(:request) { Rack::MockRequest.new stack }
 
+  before do
+
+  end
+
   it 'should generate random request IDs' do
     first_response = request.get('/')
     second_response = request.get('/')
