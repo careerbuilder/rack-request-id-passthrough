@@ -3,7 +3,7 @@ $LOAD_PATH.push File.expand_path('../lib', __FILE__)
 
 Gem::Specification.new do |s|
   s.name          = 'rack-request-id-passthrough'
-  s.version       = '1.1.0'
+  s.version       = '1.2.0'
   s.summary       = 'Middleware for persisting request IDs'
   s.description   = 'Rack middleware which will take incoming headers (such as request id) and ensure that they are passed along to outgoing http requests'
   s.author        = 'Jeffery Yeary'

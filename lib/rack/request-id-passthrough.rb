@@ -10,14 +10,14 @@
 # See the License for the specific language governing permissions and limitations under the License.
 require 'securerandom'
 require 'net/http'
-
+require_relative '../../lib/rack-request-id-passthrough/rack-request-id-passthrough'
 module Rack
   class RequestIDPassthrough
     def initialize(app, options = {})
       @app = app
-      @headers = options.fetch(:source_headers, %w(CF-RAY X-Request-Id))
-      @outgoing_header = options.fetch(:outgoing_headers, %w(REQUEST_ID))
-      @patch_http = options.fetch(:add_request_id_to_http, true)
+      @headers = RackRequestIDPassthrough.source_headers
+      @outgoing_header = RackRequestIDPassthrough.response_headers
+      @patch_http = (RackRequestIDPassthrough.http_headers.length > 0)
     end
 
     def call(env)
@@ -65,7 +65,9 @@ module Net::HTTPHeader
   def initialize_http_header(initheader)
     if Thread.current[:add_request_id_to_http] && Thread.current[:request_id_passthrough]
       initheader ||= {}
-      initheader['REQUEST_ID'] = Thread.current[:request_id_passthrough]
+      RackRequestIDPassthrough.http_headers.each do |header|
+        initheader[header] = Thread.current[:request_id_passthrough]
+      end
     end
     original_initialize_http_header(initheader)
   end
