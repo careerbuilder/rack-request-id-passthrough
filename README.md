@@ -47,7 +47,7 @@ config.middleware.insert_after Rack::RequestIDPassthrough
 There are three main configuration options
 - source_headers: An array of headers to look for incoming request id values
 - outgoing_headers: An array of headers which will be appended to all outgoing http/https requests
-- http_headers: An array http headers that will be appended to all outgoing http calls, if you don't want to append then set this to []
+- http_headers: An array of http headers that will be appended to all outgoing http calls, if you don't want to append then set this to []
 
 So in the example above ridp would check the HTTP headers FUNKY_TOWN and LESS_IMPORTANT for a value (in that order).  If it found one it would add it ```Thread.current[:request_id_passthrough]``` for usage.  It would also add an HTTP header called OUTGOING to all http requests going thru net/http that contains the request id. 
 

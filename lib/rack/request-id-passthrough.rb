@@ -10,7 +10,8 @@
 # See the License for the specific language governing permissions and limitations under the License.
 require 'securerandom'
 require 'net/http'
-require_relative '../../lib/rack-request-id-passthrough/rack-request-id-passthrough'
+require_relative '../rack-request-id-passthrough/rack-request-id-passthrough'
+
 module Rack
   class RequestIDPassthrough
     def initialize(app, options = {})
