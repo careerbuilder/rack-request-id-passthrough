@@ -33,21 +33,23 @@ module Rack
     def determine_request_id(env)
       request_id = SecureRandom.uuid
       matches = {}
-      env.each do |key,value|
-        @headers.reverse_each do |header_name|
-          matches[header_name] = value if same_header?(header_name,key)
+
+      env.each do |k, v|
+        @headers.find do |header|
+          matches[header] = v if same_header?(header, k)
         end
       end
-      @headers.reverse_each do |header_name|
+
+      @headers.find do |header_name|
         request_id = matches[header_name] if matches[header_name]
       end
 
       request_id
     end
 
-    def same_header?(header_name,key)
+    def same_header?(header_name, env_key)
       h = header_name.upcase.gsub('_','-').gsub('HTTP-','')
-      k = key.upcase.gsub('_','-').gsub('HTTP-','')
+      k = env_key.upcase.gsub('_','-').gsub('HTTP-','')
       h == k
     end
 
