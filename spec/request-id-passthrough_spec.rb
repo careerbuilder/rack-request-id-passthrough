@@ -34,6 +34,21 @@ describe Rack::RequestIDPassthrough do
     expect(response.headers['REQUEST_ID']).to eq('cloudflaretestid')
   end
 
+  it 'should ignore the casing of the headers' do
+    response = request.get '/', 'cf-rAy' => 'cloudflaretestid'
+    expect(response.headers['REQUEST_ID']).to eq('cloudflaretestid')
+  end
+
+  it 'should ignore the http prepended onto the headers' do
+    response = request.get '/', 'HTTP_CF_RAY' => 'cloudflaretestid'
+    expect(response.headers['REQUEST_ID']).to eq('cloudflaretestid')
+  end
+
+  it 'should treat _ and - the same' do
+    response = request.get '/', 'HTTP-CF-RAY' => 'cloudflaretestid'
+    expect(response.headers['REQUEST_ID']).to eq('cloudflaretestid')
+  end
+
   it 'should choose which id to persist in order' do
     response = request.get '/', 'CF-RAY' => 'cloudflaretestid', 'X-Request-Id' => 'someotherid'
     expect(response.headers['REQUEST_ID']).to eq('cloudflaretestid')

@@ -10,14 +10,15 @@
 # See the License for the specific language governing permissions and limitations under the License.
 require 'securerandom'
 require 'net/http'
+require_relative '../rack-request-id-passthrough/rack-request-id-passthrough'
 
 module Rack
   class RequestIDPassthrough
     def initialize(app, options = {})
       @app = app
-      @headers = options.fetch(:source_headers, %w(CF-RAY X-Request-Id))
-      @outgoing_header = options.fetch(:outgoing_headers, %w(REQUEST_ID))
-      @patch_http = options.fetch(:add_request_id_to_http, true)
+      @headers = RackRequestIDPassthrough.source_headers
+      @outgoing_header = RackRequestIDPassthrough.response_headers
+      @patch_http = (RackRequestIDPassthrough.http_headers.length > 0)
     end
 
     def call(env)
@@ -32,10 +33,25 @@ module Rack
 
     def determine_request_id(env)
       request_id = SecureRandom.uuid
-      @headers.reverse_each do |header_name|
-        request_id = env[header_name] if env[header_name]
+      matches = {}
+
+      env.each do |k, v|
+        @headers.find do |header|
+          matches[header] = v if same_header?(header, k)
+        end
       end
+
+      @headers.find do |header_name|
+        request_id = matches[header_name] if matches[header_name]
+      end
+
       request_id
+    end
+
+    def same_header?(header_name, env_key)
+      h = header_name.upcase.gsub('_','-').gsub('HTTP-','')
+      k = env_key.upcase.gsub('_','-').gsub('HTTP-','')
+      h == k
     end
 
     def populate_headers(headers)
@@ -52,7 +68,9 @@ module Net::HTTPHeader
   def initialize_http_header(initheader)
     if Thread.current[:add_request_id_to_http] && Thread.current[:request_id_passthrough]
       initheader ||= {}
-      initheader['REQUEST_ID'] = Thread.current[:request_id_passthrough]
+      RackRequestIDPassthrough.http_headers.each do |header|
+        initheader[header] = Thread.current[:request_id_passthrough]
+      end
     end
     original_initialize_http_header(initheader)
   end
