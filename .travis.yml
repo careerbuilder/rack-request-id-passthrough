@@ -1,0 +1,22 @@
+language: ruby
+rvm:
+- 2.3
+cache: bundler
+sudo: false
+script: bundle exec rspec
+notifications:
+  email: false
+  hipchat:
+    rooms:
+      secure: yMrnjFf0zD8e6GRMhRtoSl6zaz8wOW+8Kv35UBAnj8F07FHTWi2Jm4PeQ5BAMkEljpm11jKgg+dZrl49lhhpSa1jlkZgM2KC5QVwi6X20FmKG/18Bp4wAe7CNR5HsWZQMJhzZIHSHPfg/WkVMhgqlDXXEhs48mUo7sMaEdy2M2MeJMkjrnHfteNguMxPiOVg03snG+/rrvqZvz0VaBbze/B98LcxKW+Yw+orDaCPXxvXseB3fbPwwemGvmoTnhZfzRQFOa7ad5wsiJXLBYmVP3B+pKvfgukXeCn925Hx8IazYs1dH6rWeWUoHULWR6MJMjBT1kVBgjiiFTXE1gcLskjfSKYtfv5Fvs3DpcVnUJmrYZDus+HAak9CbwKEVK9UdRsBn8xPJBT2JvpROHn89dVX4W8iMOQ97CxmngHBRVx6i3gLma/QPDzL3TNLzLcfW1YgmwVwCNI90R+AKvGvGKp12E9j9zu7RyT4cMHS96QWIOZSpm7ncKHosaT6oFMQoxo0YENQMFllhutygjJDHAQQ6YwEyfq9NgCDDS9GQJ82KzLOLyInk0O0zqr4z/sDQoC8rMOXfxpXUBLCqu6ruMpt/KQqV2TFRBPStpurSAW/Y2uqvSXJrUZIhsBC1iUgsGD19Ox96wHaFBcmipBn1/iiqRwQNpCkXZ0vmC6IVIw=
+  template:
+  - "%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}"
+  notify: true
+deploy:
+  provider: rubygems
+  api_key:
+    secure: Onn6sFmQyQOOc8NN/gPSLt2bw2IF4F418oMOVMQKO87hRM55JK2p9u3aKXwtrDmtLgCQkwDycXYVIvycID7OO/K0U5/XhHLc4RH7nEMKJ2tBD3XRat2yAJhJ9XBwpYqK5Lt4nh9GE3m/B2szZ3XYH9fe5yrgaJxyJ6JRpxpjS8Fhl4bo7lTGXQbiyXiXm6EQSEFJjNuEy91GJMTBYIyCEiz5UkXZ8LnEAGSO84lwBM2bdQUx6VqTauCySqH6t5QL3ybwgxz4/vcvjs9qDnku6JgCVlUZtF1eaWWRkHmHTdHmlOKR+AlHmIkJEI10ZkgvYLIScsu+6XtjlZHW1beQUMlX3JAl7i1VVZFkEZMCl4NCSZ0ZKQaMstMripxFI5Q8dTnqu7jwhq3VpCdbQRkYbOVeysJyGDMVxPNOwFJQ9XwgUddxQXkU1WlHt4ovkEwRMKZnZeTGB1k6RKlq18uhpJfkkpiP0/4mylJbxm0nhvGYSc07YYRddaZfsNes918Q3evqAkV8/fG97KcXPVRw+FZb9UkZzXlcS7gV0V1Wpts/rt16iQvARxGnJ6vmWnKdg7ewjsIjP9MSqZDYVZbLfWimVr7oggOJ823PcudSKb6NUuMMj22hcHmwhkDFWejBhRhni6yMlhnjfltvWBZ0vcmee1i/P18r8KVe1tYb3Qs=
+  gem: rack-request-id-passthrough
+  on:
+    branch: master
+    repo: careerbuilder/rack-request-id-passthrough
