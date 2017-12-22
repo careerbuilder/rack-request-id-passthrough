@@ -22,9 +22,11 @@ module Rack
     end
 
     def call(env)
-      status, headers, response = @app.call(env)
       Thread.current[:request_id_passthrough] = determine_request_id(env)
       Thread.current[:add_request_id_to_http] = @patch_http
+
+      status, headers, response = @app.call(env)
+
       populate_headers(headers)
       [status, headers, response]
     end

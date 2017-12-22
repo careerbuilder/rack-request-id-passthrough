@@ -7,9 +7,20 @@ This can be used to track a request throughout your architecture by ensuring tha
 
 ## Installation
 
+Add this line to your application's Gemfile:
+
 ```ruby
-# Gemfile
-gem install 'rack-request-id-passthrough'
+gem 'rack-request-id-passthrough', require: 'rack/request-id-passthrough'
+```
+
+And then execute:
+```bash
+bundle install
+```
+
+Or install it yourself as:
+```bash
+gem install rack-request-id-passthrough
 ```
 
 #### Sinatra (or any rack based stack)
@@ -29,19 +40,25 @@ module MyApp
   class Application < Rails::Application
     # ...
     # warning! Make sure that you insert this middleware early so that you can capture all relevant network calls
-    config.middleware.insert_after Rack::Runtime, Rack::RequestIDPassthrough, {opts}
+    config.middleware.insert_after Rack::Runtime, Rack::RequestIDPassthrough
   end
 end
 ```
 
 ## Configuration Example
-```ruby
-# somewhere in your app maybe an initializer?
-RackRequestIDPassthrough.source_headers: %w(HTTP_FUNKY_TOWN HTTP_LESS_IMPORTANT) # List of source headers to look for request ids in
-RackRequestIDPassthrough.response_headers: %w(OUTGOING) # Controls the response headers sent back to the browser
-RackRequestIDPassthrough.http_headers: %w(OUTGOING_CALL) # Name of http headers that will be appended to all outgoing http calls
 
+Create an initializer file:
+```ruby
+# ./config/initializers/rack-request-id-passthrough.rb
+
+RackRequestIDPassthrough.source_headers = %w(HTTP_FUNKY_TOWN HTTP_LESS_IMPORTANT) # List of source headers to look for request ids in
+RackRequestIDPassthrough.response_headers = %w(OUTGOING) # Controls the response headers sent back to the browser
+RackRequestIDPassthrough.http_headers = %w(OUTGOING_CALL) # Name of http headers that will be appended to all outgoing http calls
+```
+
+```ruby
 # ./config/application.rb
+
 config.middleware.insert_after Rack::RequestIDPassthrough
 ```
 There are three main configuration options
@@ -49,7 +66,7 @@ There are three main configuration options
 - outgoing_headers: An array of headers which will be appended to all outgoing http/https requests
 - http_headers: An array of http headers that will be appended to all outgoing http calls, if you don't want to append then set this to []
 
-So in the example above ridp would check the HTTP headers FUNKY_TOWN and LESS_IMPORTANT for a value (in that order).  If it found one it would add it ```Thread.current[:request_id_passthrough]``` for usage.  It would also add an HTTP header called OUTGOING to all http requests going thru net/http that contains the request id. 
+So in the example above ridp would check the HTTP headers FUNKY_TOWN and LESS_IMPORTANT for a value (in that order).  If it found one it would add it ```Thread.current[:request_id_passthrough]``` for usage.  It would also add an HTTP header called OUTGOING to all http requests going thru net/http that contains the request id.
 
 ## Contributing
 
