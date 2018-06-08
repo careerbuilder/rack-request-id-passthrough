@@ -1,9 +1,10 @@
-
-$LOAD_PATH.push File.expand_path('../lib', __FILE__)
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'rack-request-id-passthrough/version'
 
 Gem::Specification.new do |s|
   s.name          = 'rack-request-id-passthrough'
-  s.version       = '1.2.1'
+  s.version       = RackRequestIDPassthrough::VERSION
   s.summary       = 'Middleware for persisting request IDs'
   s.description   = 'Rack middleware which will take incoming headers (such as request id) and ensure that they are passed along to outgoing http requests'
   s.author        = 'Jeffery Yeary'
